@@ -1,5 +1,6 @@
 package com.tomogle;
 
+import mockit.Deencapsulation;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
 import mockit.integration.junit4.JMockit;
@@ -10,8 +11,11 @@ import org.junit.runner.RunWith;
 @RunWith(JMockit.class)
 public class AppTest {
 
+  @Mocked
+  private Server server;
+
   @Test
-  public void testMainStartsJettyServer(final @Mocked Server server) throws Exception {
+  public void testMainStartsJettyServer() throws Exception {
     new NonStrictExpectations() {{
       server.start(); times = 1;
     }};
@@ -19,9 +23,17 @@ public class AppTest {
   }
 
   @Test
-  public void testMainJoinsWithJettyServer(final @Mocked Server server) throws Exception {
+  public void testMainJoinsWithJettyServer() throws Exception {
     new NonStrictExpectations() {{
       server.join(); times = 1;
+    }};
+    App.main(new String[]{});
+  }
+  
+  @Test
+  public void testSetsJettyServerToStopAtShutdown() throws Exception {
+    new NonStrictExpectations() {{
+      server.setStopAtShutdown(true); times = 1;
     }};
     App.main(new String[]{});
   }

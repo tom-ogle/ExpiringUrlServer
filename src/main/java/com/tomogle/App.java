@@ -1,15 +1,12 @@
 package com.tomogle;
 
-import org.eclipse.jetty.server.Server;
+import com.tomogle.server.HttpServer;
 
 public class App {
+
+  private static final HttpServer httpServer = new HttpServer();
+
   public static void main(String[] args) {
-    Server httpServer = new Server();
-    try {
-      httpServer.start();
-      httpServer.join();
-    } catch(Exception e) {
-      // TODO: Log this
-    }
+    httpServer.startServer();
   }
 }
