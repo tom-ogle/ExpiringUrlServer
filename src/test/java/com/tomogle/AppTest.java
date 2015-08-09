@@ -1,6 +1,5 @@
 package com.tomogle;
 
-import mockit.Deencapsulation;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
 import mockit.integration.junit4.JMockit;
@@ -31,10 +30,11 @@ public class AppTest {
   }
   
   @Test
-  public void testSetsJettyServerToStopAtShutdown() throws Exception {
+  public void testMainSetsJettyServerToStopAtShutdown() throws Exception {
     new NonStrictExpectations() {{
       server.setStopAtShutdown(true); times = 1;
     }};
     App.main(new String[]{});
   }
+
 }
