@@ -10,10 +10,14 @@ public class ExpiringUrlServer {
 
   private static Logger LOGGER = LoggerFactory.getLogger(ExpiringUrlServer.class);
 
+  private final Server server;
+  private final Handler handler;
+
   @Inject
-  private Server server;
-  @Inject
-  private Handler handler;
+  public ExpiringUrlServer(final Server server, final Handler handler) {
+    this.server = server;
+    this.handler = handler;
+  }
 
   public void runServer() {
     try {
