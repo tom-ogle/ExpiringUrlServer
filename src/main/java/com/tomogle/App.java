@@ -18,7 +18,7 @@ public class App {
   private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
 
   public static void main(String[] args) {
-    // TODO: Validate expected properties exist on app load
+    // TODO: Validate expected properties exist on app load via a Config class
     Properties properties = new Properties();
     try {
       LOGGER.info("Loading properties from file");
@@ -26,7 +26,7 @@ public class App {
       LOGGER.info("Successfully properties from file");
     } catch(IOException e) {
       LOGGER.error(format("Could not load the Property file '%s'", Constants.PROPERTY_FILE_NAME), e);
-      System.exit(1);
+      exit(1);
     }
     LOGGER.info("Initializing dependency injection");
     Injector injector = Guice.createInjector(new HttpServerModule(properties));
@@ -34,4 +34,9 @@ public class App {
     ExpiringUrlServer expiringUrlServer = injector.getInstance(ExpiringUrlServer.class);
     expiringUrlServer.runServer();
   }
+
+  private static void exit(final int status) {
+    System.exit(status);
+  }
+
 }

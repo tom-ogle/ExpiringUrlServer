@@ -8,6 +8,7 @@ import com.google.inject.name.Names;
 import com.tomogle.constants.PropertyNames;
 import com.tomogle.handler.ExpiringUrlProxy;
 import com.tomogle.server.ExpiringUrlServer;
+import com.tomogle.service.URIService;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
@@ -26,13 +27,19 @@ public class HttpServerModule extends AbstractModule {
 
   @Override protected void configure() {
     Names.bindProperties(binder(), properties);
+    bind(URIService.class).toProvider(URIServiceProvider.class);
     bind(ExpiringUrlServer.class).annotatedWith(Names.named(PropertyNames.SERVER_HTTP_PORT)).to(ExpiringUrlServer.class);
   }
 
-  @Provides
-  Handler provideHandler() {
+  @Provides @Inject
+  ServletHolder provideServletHolder(final URIService uriService) {
+    return new ServletHolder(new ExpiringUrlProxy(uriService));
+  }
+
+  @Provides @Inject
+  Handler provideHandler(final ServletHolder servletHolder) {
     ServletContextHandler context = new ServletContextHandler();
-    context.addServlet(new ServletHolder(new ExpiringUrlProxy()), "/*");
+    context.addServlet(servletHolder, "/*");
     return context;
   }
 
