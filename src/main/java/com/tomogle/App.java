@@ -23,7 +23,7 @@ public class App {
     try {
       LOGGER.info("Loading properties from file");
       properties.load(App.class.getClassLoader().getResourceAsStream(Constants.PROPERTY_FILE_NAME));
-      LOGGER.info("Successfully properties from file");
+      LOGGER.info("Successfully loaded properties from file");
     } catch(IOException e) {
       LOGGER.error(format("Could not load the Property file '%s'", Constants.PROPERTY_FILE_NAME), e);
       exit(1);
